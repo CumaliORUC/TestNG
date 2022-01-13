@@ -9,6 +9,8 @@ import utulities.TestBaseClass;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static org.testng.Assert.assertTrue;
+
 /*
 - Go to https://the-internet.herokuapp.com/download adress
 -  Download Appium.txt document
@@ -31,7 +33,30 @@ public class FileDownLoadandFileUpload extends TestBaseClass{
 
             Thread.sleep(6000);
 
-            Assert.assertTrue(Files.exists(Path.of(AppiumPath)));
+            assertTrue(Files.exists(Path.of(AppiumPath)));
+
+    }
+
+    /*
+    2. https://the-internet.herokuapp.com/upload
+    3. Cliclk to chooseFile button
+    4. Slect folder from your Downloads folder
+    5. Upload butonuna basalim.
+    6. Test the “File Uploaded!” text is seen.
+     */
+    @Test
+        public void fileUpLoad() {
+            driver.get("https://the-internet.herokuapp.com/upload");
+            WebElement chooseFileButton=driver.findElement(By.xpath("//input[@id='file-upload']")) ;
+            // WARNING!!! Sendkeys code uses without click to ChooseFileButton
+            String mainPath=System.getProperty("user.home");
+            String AppiumPath=mainPath+"\\Downloads\\Appium.txt"; //Appium path from download folder
+            chooseFileButton.sendKeys(AppiumPath);
+
+            driver.findElement(By.cssSelector(".button")).click(); //click to Upload button
+            WebElement FileUploadedElement=driver.findElement(By.tagName("h3"));
+
+            assertTrue(FileUploadedElement.isDisplayed());
 
     }
 
